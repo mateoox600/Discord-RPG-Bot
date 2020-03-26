@@ -6,6 +6,7 @@ import java.io.IOException;
 import java.util.Calendar;
 import java.util.Date;
 
+import fr.mateoox600.bot.Main;
 import net.dv8tion.jda.api.entities.Guild;
 import net.dv8tion.jda.api.entities.Member;
 import net.dv8tion.jda.api.entities.TextChannel;
@@ -26,6 +27,7 @@ public class Log {
 				logFile.createNewFile();
 			} catch (IOException e) {
 				e.printStackTrace();
+				Main.messageOwner();
 			}
 		}
 	}
@@ -39,6 +41,7 @@ public class Log {
 			w.close();
 		} catch (IOException e) {
 			e.printStackTrace();
+			Main.messageOwner();
 		}
 	}
 	
@@ -52,6 +55,7 @@ public class Log {
 			w.close();
 		} catch (IOException e) {
 			e.printStackTrace();
+			Main.messageOwner();
 		}
 	}
 	

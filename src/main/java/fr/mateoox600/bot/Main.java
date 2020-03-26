@@ -19,6 +19,7 @@ import java.util.*;
 
 public class Main {
 
+    private static JDA jda;
     private static File tokenFile = new File("h://Bot/token.txt");
     private static boolean running = true;
     public static Log logger;
@@ -27,14 +28,14 @@ public class Main {
     @SuppressWarnings("deprecation")
     public static void main(String[] args) throws LoginException, InterruptedException, IOException {
 
-        if(!tokenFile.exists()) {
+        if (!tokenFile.exists()) {
             return;
         }
 
         BufferedReader bf = new BufferedReader(new FileReader(tokenFile));
         String TOKEN = bf.readLine();
         bf.close();
-        JDA jda = new JDABuilder(AccountType.BOT).setToken(TOKEN).build();
+        jda = new JDABuilder(AccountType.BOT).setToken(TOKEN).build();
         logger = new Log();
         CommandClientBuilder builder = new CommandClientBuilder();
         builder.setPrefix(Config.PREFIX);
@@ -79,10 +80,10 @@ public class Main {
         Objects.requireNonNull(jda.getTextChannelById("691749591485251612")).sendMessage("Bot stated successfuly at " + start_date.getHours() + ":" + start_date.getMinutes() + ":" + start_date.getSeconds() + " !").queue();
 
         Scanner sc = new Scanner(System.in);
-        while(running) {
+        while (running) {
             String[] cmd_args = sc.nextLine().split("\\s+");
             String cmd = cmd_args[0];
-            if(cmd.equalsIgnoreCase("stop")) {
+            if (cmd.equalsIgnoreCase("stop")) {
                 System.out.println("Stoping Bot");
                 logger.logSystemMessage("Getting shutdown !", LogStat.INFO);
                 Date down_date = new Date(System.currentTimeMillis());
@@ -100,19 +101,23 @@ public class Main {
     }
 
     public static boolean initPlayer(User author) {
-        if(new File(Config.FILE_PREFIX + author.getId() + ".txt").exists()) {
-            if(!Main.players.containsKey(author.getId())) {
+        if (new File(Config.FILE_PREFIX + author.getId() + ".txt").exists()) {
+            if (!Main.players.containsKey(author.getId())) {
                 players.put(author.getId(), new PlayerData(author, 0));
             }
             return true;
-        }else return false;
+        } else return false;
+    }
+
+    public static void messageOwner() {
+        Objects.requireNonNull(jda.getUserById("251978573139673088")).openPrivateChannel().complete().sendMessage("Une érreur a été détècter XD").queue();
     }
 
 }
 
 class Runnable extends TimerTask {
     public void run() {
-        for(Map.Entry<String, PlayerData> p : Main.players.entrySet()) {
+        for (Map.Entry<String, PlayerData> p : Main.players.entrySet()) {
             p.getValue().loop();
         }
     }
