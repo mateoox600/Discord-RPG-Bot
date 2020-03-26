@@ -69,7 +69,7 @@ public class Main {
         jda.addEventListener(client);
 
         Timer timer = new Timer();
-        timer.schedule(new Runnable(), 0, 1000);
+        timer.scheduleAtFixedRate(new Runnable(), 0, 1000);
         logger.logSystemMessage("Timer Launch !", LogStat.INFO);
 
 
@@ -89,6 +89,9 @@ public class Main {
                 Date down_date = new Date(System.currentTimeMillis());
                 Objects.requireNonNull(jda.getTextChannelById("691749591485251612")).sendMessage("Bot shutdown successfuly at " + down_date.getHours() + ":" + down_date.getMinutes() + ":" + down_date.getSeconds() + " !").queue();
                 running = false;
+                for (Map.Entry<String, PlayerData> p : players.entrySet()) {
+                    p.getValue().save();
+                }
                 timer.cancel();
                 logger.logSystemMessage("Timer Stop !", LogStat.INFO);
                 jda.shutdown();

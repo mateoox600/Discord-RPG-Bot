@@ -23,7 +23,7 @@ public class Config {
 
     public static String FARMED = "You farm ////Tu as farmer ";
     public static String NO_RESSOURCES = "There are no ressources in this area !////Tu est dans une zone sans ressources !";
-    public static String TO_FARM = "To farm do \";farm <number of time>\"////Pour farmer faites \";farm <nombre de fois>\"";
+    public static String FARMING_LAUNCH = "You launch the farm of////Tu a lancer le farming de";
     public static String CANT_FARMING = "You can't do that while farming////Tu ne peut pas faire ça pendant que tu farm";
 
     public static String NOT_REQUIRE_LEVEL = "You have not the require level. The require level is : ////Tu n'as pas le niveau requi. le niveau requi est is : ";

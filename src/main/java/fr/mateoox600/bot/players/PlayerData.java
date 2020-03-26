@@ -94,7 +94,6 @@ public class PlayerData {
     public void loop() {
 
         this.refresh();
-        this.save();
 
         if (farming) {
             farm_seconds--;
