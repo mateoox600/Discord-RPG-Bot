@@ -62,7 +62,7 @@ public class Main {
         builder.addCommand(new ClassesCommand());
         logger.logSystemMessage("Classes Command Register !", LogStat.INFO);
 
-        builder.setOwnerId("251978573139673088");
+        builder.setOwnerId("664945581470253078");
         CommandClient client = builder.build();
         jda.addEventListener(client);
 
