@@ -18,7 +18,7 @@ public class AccountCommand extends Command {
 	@Override
 	protected void execute(CommandEvent e) {
 		String[] args = e.getMessage().getContentRaw().split("\\s+");
-		boolean player_exist_request = Main.initPlayer(e.getMember().getUser().getId());
+		boolean player_exist_request = Main.initPlayer(e.getMember().getUser());
 		if(args.length > 2 && args[1].equalsIgnoreCase("create")) {
 			if(player_exist_request) {
 				e.getChannel().sendMessage("Tu as déja un compte \n\n"
@@ -27,7 +27,7 @@ public class AccountCommand extends Command {
 			}
 			else {
 				if(args[2].equalsIgnoreCase("Warrior") || args[2].equalsIgnoreCase("Archer") || args[2].equalsIgnoreCase("Mage") || args[2].equalsIgnoreCase("Assasin")) {
-					Main.players.put(e.getMember().getUser().getId(), new PlayerData(e.getMember().getUser().getId(), Class.getClassByName(args[2]).getId()));
+					Main.players.put(e.getMember().getUser().getId(), new PlayerData(e.getMember().getUser(), Class.getClassByName(args[2]).getId()));
 					e.getChannel().sendMessage("Ton compte a été créer ! tu es un " + Main.players.get(e.getMember().getUser().getId()).classe.c.getName() + "\n\n"
 							+ "Your account was create ! you are now a " + Main.players.get(e.getMember().getUser().getId()).classe.c.getName()).queue();
 					Main.logger.logCommand(e.getMember(), e.getGuild(), e.getTextChannel(), e.getMessage().getContentRaw(), LogStat.INFO);

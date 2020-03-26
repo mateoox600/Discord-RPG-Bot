@@ -11,6 +11,7 @@ import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.JDABuilder;
 import net.dv8tion.jda.api.OnlineStatus;
 import net.dv8tion.jda.api.entities.Activity;
+import net.dv8tion.jda.api.entities.User;
 
 import javax.security.auth.login.LoginException;
 import java.io.*;
@@ -98,10 +99,10 @@ public class Main {
 
     }
 
-    public static boolean initPlayer(String id) {
-        if(new File(Config.FILE_PREFIX + id + ".txt").exists()) {
-            if(!Main.players.containsKey(id)) {
-                players.put(id, new PlayerData(id, 0));
+    public static boolean initPlayer(User author) {
+        if(new File(Config.FILE_PREFIX + author.getId() + ".txt").exists()) {
+            if(!Main.players.containsKey(author.getId())) {
+                players.put(author.getId(), new PlayerData(author, 0));
             }
             return true;
         }else return false;

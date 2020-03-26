@@ -19,7 +19,7 @@ public class MessageEvent extends ListenerAdapter {
 		
 		if(args[0].substring(0, 1).equalsIgnoreCase(Config.PREFIX)) {
 			
-			boolean player_exist_request = Main.initPlayer(e.getMember().getUser().getId());
+			boolean player_exist_request = Main.initPlayer(e.getMember().getUser());
 			String cmd_arg = args[0].substring(1);
 			
 			if(cmd_arg.equalsIgnoreCase("character") || cmd_arg.equalsIgnoreCase("c")) {
@@ -142,7 +142,7 @@ public class MessageEvent extends ListenerAdapter {
 						
 						if(args[2].equalsIgnoreCase("Warrior") || args[2].equalsIgnoreCase("Archer") || args[2].equalsIgnoreCase("Mage") || args[2].equalsIgnoreCase("Assasin")) {
 							
-							Main.players.put(e.getMember().getUser().getId(), new PlayerData(e.getMember().getUser().getId(), Class.getClassByName(args[2]).getId()));
+							Main.players.put(e.getMember().getUser().getId(), new PlayerData(e.getMember().getUser(), Class.getClassByName(args[2]).getId()));
 							e.getChannel().sendMessage("Ton compte a été créer ! tu est un " + Main.players.get(e.getMember().getUser().getId()).classe.c.getName() + "\n\n"
 									+ "Your account was create ! you are now a " + Main.players.get(e.getMember().getUser().getId()).classe.c.getName()).queue();
 							

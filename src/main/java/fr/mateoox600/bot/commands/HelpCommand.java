@@ -19,7 +19,7 @@ public class HelpCommand extends Command {
 	protected void execute(CommandEvent e) {
 		String[] args = e.getMessage().getContentRaw().split("\\s+");
 		if(args.length == 1) {
-			boolean player_exist_request = Main.initPlayer(e.getMember().getUser().getId());
+			boolean player_exist_request = Main.initPlayer(e.getMember().getUser());
 			if(player_exist_request) {
 				PlayerData p = Main.players.get(e.getMember().getUser().getId());
 				e.getMember().getUser().openPrivateChannel().complete().sendMessage(Config.HELP.split("////")[p.lang]).queue();

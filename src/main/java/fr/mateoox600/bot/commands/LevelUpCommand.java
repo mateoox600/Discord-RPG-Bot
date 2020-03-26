@@ -19,7 +19,7 @@ public class LevelUpCommand extends Command {
 	@Override
 	protected void execute(CommandEvent e) {
 		String[] args = e.getMessage().getContentRaw().split("\\s+");
-		boolean player_exist_request = Main.initPlayer(e.getMember().getUser().getId());
+		boolean player_exist_request = Main.initPlayer(e.getMember().getUser());
 		if (player_exist_request) {
 			PlayerData p = Main.players.get(e.getMember().getUser().getId());
 			if (args.length > 1) {

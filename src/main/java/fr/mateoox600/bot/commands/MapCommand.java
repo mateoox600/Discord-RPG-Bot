@@ -17,7 +17,7 @@ public class MapCommand extends Command {
 
 	@Override
 	protected void execute(CommandEvent e) {
-		boolean player_exist_request = Main.initPlayer(e.getMember().getUser().getId());
+		boolean player_exist_request = Main.initPlayer(e.getMember().getUser());
 		if(player_exist_request) {
 			PlayerData p = Main.players.get(e.getMember().getUser().getId());
 			e.getChannel().sendMessage(p.getMap()).queue();

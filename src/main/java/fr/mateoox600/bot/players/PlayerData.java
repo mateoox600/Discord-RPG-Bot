@@ -1,12 +1,5 @@
 package fr.mateoox600.bot.players;
 
-import java.awt.Color;
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileReader;
-import java.io.FileWriter;
-import java.io.IOException;
-
 import fr.mateoox600.bot.Config;
 import fr.mateoox600.bot.map.Map;
 import fr.mateoox600.bot.map.Maps;
@@ -16,10 +9,14 @@ import fr.mateoox600.bot.players.ressource.Ressources;
 import fr.mateoox600.bot.players.weapon.Weapon;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.entities.MessageEmbed.Field;
+import net.dv8tion.jda.api.entities.User;
+
+import java.awt.*;
+import java.io.*;
 
 public class PlayerData {
 	
-	public String author_id;
+	public User author;
 	public File player_file;
 	public int health, max_health, xp, rank, goalxp, coins, stone, iron, copper, fish, wood, lang;
 	public Classe classe;
@@ -27,10 +24,10 @@ public class PlayerData {
 	public Armor armor;
 	public Map map;
 	
-	public PlayerData(String author_id, int start_class) {
+	public PlayerData(User author, int start_class) {
 		
-		this.player_file = new File(Config.FILE_PREFIX + author_id + ".txt");
-		this.author_id = author_id;
+		this.player_file = new File(Config.FILE_PREFIX + author.getId() + ".txt");
+		this.author = author;
 		
 		if(player_file.exists()) {
 			
@@ -139,20 +136,20 @@ public class PlayerData {
 	public EmbedBuilder getCharacter() {
 		
 		EmbedBuilder eb = new EmbedBuilder();
-		
-		eb.setTitle("<@" + author_id + "> : \n");
-		
+
+		eb.setTitle(author.getName() + " character");
 		eb.setColor(Color.RED);
 		
 		eb.addField(new Field("	**" + Config.HEALTH.split("////")[lang] + "** : ", health + "/" + max_health, true));
-		eb.addField(new Field("	**" + Config.LEVEL.split("////")[lang] + "** : ", String.valueOf(rank), true));
-		eb.addField(new Field("	**Xp** : ", xp + "/" + goalxp, true));
-		eb.addField(new Field("	**Coins** : ", String.valueOf(coins), false));
-		eb.addField(new Field("	**" + Config.STONE.split("////")[lang] + "** : ", String.valueOf(stone), true));
-		eb.addField(new Field("	**" + Config.IRON.split("////")[lang] + "** : ", String.valueOf(iron), true));
-		eb.addField(new Field("	**" + Config.COPPER.split("////")[lang] + "** : ", String.valueOf(copper), true));
-		eb.addField(new Field("	**" + Config.FISH.split("////")[lang] + "** : ", String.valueOf(fish), true));
-		eb.addField(new Field("	**" + Config.WOOD.split("////")[lang] + "** : ", String.valueOf(wood), true));
+		eb.addField(new Field("	**" + Config.LEVEL.split("////")[lang] + "** : ", rank + " [ Exp: " + xp + "]", true));
+		eb.addField(new Field("	**Coins** : ", String.valueOf(coins), true));
+		eb.addField(new Field("	**Ressources (1)**",
+				Config.STONE.split("////")[lang] + ": " + stone + "\n" +
+						Config.IRON.split("////")[lang] + ": " + iron + "\n" +
+						Config.COPPER.split("////")[lang] + ": " + copper, true));
+		eb.addField(new Field("	**Ressources (2)**",
+						Config.FISH.split("////")[lang] + ": " + fish + "\n" +
+						Config.WOOD.split("////")[lang] + ": " + wood, true));
 		eb.addField(new Field("	**Classe** : ", classe.c.getName(), false));
 		eb.addField(new Field("	**Classe Rank** : ", String.valueOf(classe.c.getRank()), true));
 		eb.addField(new Field("	**" + Config.WEAPON.split("////")[lang] + "** : ", "*" + weapon.weapon.getName() + "*", false));
