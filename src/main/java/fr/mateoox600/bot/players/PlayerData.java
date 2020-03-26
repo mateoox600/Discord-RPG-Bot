@@ -19,7 +19,21 @@ public class PlayerData {
 
     public User author;
     public File player_file;
-    public int health, max_health, xp, rank, goalxp, coins, stone, iron, copper, fish, wood, lang;
+    public boolean farming, to_claim;
+    public int[] resources_to_claim;
+    public int health;
+    public int max_health;
+    public int xp;
+    public int rank;
+    public int coins;
+    public int stone;
+    public int iron;
+    public int copper;
+    public int fish;
+    public int wood;
+    public int lang;
+    public int farm_seconds;
+    public int farm_number;
     public Classe classe;
     public Weapon weapon;
     public Armor armor;
@@ -42,7 +56,7 @@ public class PlayerData {
                 player_file.createNewFile();
             } catch (IOException e) {
                 e.printStackTrace();
-				Main.messageOwner();
+                Main.messageOwner();
             }
             health = 20;
             max_health = 20;
@@ -55,6 +69,11 @@ public class PlayerData {
             fish = 0;
             wood = 0;
             lang = 0;
+            farming = false;
+            to_claim = false;
+            resources_to_claim = new int[]{0, 0, 0, 0, 0};
+            farm_number = 0;
+            farm_seconds = 0;
             classe = new Classe(start_class, 0);
             weapon = new Weapon(classe.c, 0);
             armor = new Armor(0);
@@ -67,7 +86,6 @@ public class PlayerData {
 
     public void refresh() {
 
-        goalxp = (int) (((100 * ((rank + 1) * 1.1))));
         rank = (int) (xp / ((100 * ((rank + 1) * 1.1))));
         max_health = 20;
 
@@ -77,6 +95,25 @@ public class PlayerData {
 
         this.refresh();
         this.save();
+
+        if (farming) {
+            farm_seconds--;
+            if (farm_seconds == 0) {
+                if(map.currentMap.getRessources() == Ressources.STONE){
+                    resources_to_claim[0] += farm_number;
+                }else if(map.currentMap.getRessources() == Ressources.COPPER){
+                    resources_to_claim[1] += farm_number;
+                }else if(map.currentMap.getRessources() == Ressources.IRON){
+                    resources_to_claim[2] += farm_number;
+                }else if(map.currentMap.getRessources() == Ressources.FISH){
+                    resources_to_claim[3] += farm_number;
+                }else if(map.currentMap.getRessources() == Ressources.WOOD){
+                    resources_to_claim[4] += farm_number;
+                }
+                to_claim = true;
+                farming = false;
+            }
+        }
 
     }
 
@@ -95,6 +132,13 @@ public class PlayerData {
             fw.write(fish + "\n");
             fw.write(wood + "\n");
             fw.write(lang + "\n");
+            fw.write(farming + "\n");
+            fw.write(to_claim + "\n");
+            for (int value : resources_to_claim) {
+                fw.write(value + "\n");
+            }
+            fw.write(farm_number + "\n");
+            fw.write(farm_seconds + "\n");
             fw.write(classe.class_id + "\n");
             fw.write(classe.rank + "\n");
             fw.write(weapon.weapon.getId() + "\n");
@@ -105,7 +149,7 @@ public class PlayerData {
             fw.close();
         } catch (IOException e) {
             e.printStackTrace();
-			Main.messageOwner();
+            Main.messageOwner();
         }
     }
 
@@ -125,14 +169,21 @@ public class PlayerData {
                 fish = Integer.parseInt(br.readLine());
                 wood = Integer.parseInt(br.readLine());
                 lang = Integer.parseInt(br.readLine());
+                farming = Boolean.parseBoolean(br.readLine());
+                to_claim = Boolean.parseBoolean(br.readLine());
+                for(int i = 0; i < 5; i++){
+                    resources_to_claim[i] = Integer.parseInt(br.readLine());
+                }
+                farm_number = Integer.parseInt(br.readLine());
+                farm_seconds = Integer.parseInt(br.readLine());
                 classe = new Classe(Integer.parseInt(br.readLine()), Integer.parseInt(br.readLine()));
                 weapon = new Weapon(Integer.parseInt(br.readLine()), classe.c);
                 armor = new Armor(Integer.parseInt(br.readLine()));
                 map = new Map(Integer.parseInt(br.readLine()), Integer.parseInt(br.readLine()));
             } catch (Exception e) {
                 System.out.println("Failed to load player : " + author.getId() + " with name " + author.getName());
-				Main.messageOwner();
-				author.openPrivateChannel().complete().sendMessage("The bot can't load your stats please message an admin");
+                Main.messageOwner();
+                author.openPrivateChannel().complete().sendMessage("The bot can't load your stats please message an admin");
             }
 
             br.close();
@@ -212,7 +263,24 @@ public class PlayerData {
         return map.toString();
     }
 
-    public int[] gatherRessources(int numberOfTime) {
+    public void startFarming(int time, int number) {
+        farming = true;
+        farm_seconds = time;
+        farm_number = number;
+    }
+
+    public int[] claim_resources() {
+        int[] save = resources_to_claim;
+        stone += resources_to_claim[0];
+        copper += resources_to_claim[1];
+        iron += resources_to_claim[2];
+        fish += resources_to_claim[3];
+        wood += resources_to_claim[4];
+        resources_to_claim = new int[]{0, 0, 0, 0, 0};
+        return save;
+    }
+
+    /*public int[] gatherRessources(int numberOfTime) {
         int stone = 0;
         int iron = 0;
         int copper = 0;
@@ -242,6 +310,6 @@ public class PlayerData {
             return new int[]{stone, iron, copper, fish, wood};
         }
         return null;
-    }
+    }*/
 
 }

@@ -11,7 +11,7 @@ import net.dv8tion.jda.api.hooks.ListenerAdapter;
 import java.util.Objects;
 
 public class MessageEvent extends ListenerAdapter {
-	
+	/*
 	public void onGuildMessageReceived(GuildMessageReceivedEvent e) {
 		String[] args = e.getMessage().getContentRaw().split("\\s+");
 		
@@ -173,6 +173,6 @@ public class MessageEvent extends ListenerAdapter {
 			
 		}
 		
-	}
+	}*/
 	
 }
