@@ -1,5 +1,7 @@
 package fr.mateoox600.bot.map;
 
+import fr.mateoox600.bot.Main;
+
 public class Map {
 	
 	public Maps currentMap;
@@ -11,7 +13,7 @@ public class Map {
 		this.y = y;
 	}
 	
-	public String move(String dir, int level) {
+	public String move(String dir, int level, String player_id) {
 		if(dir.equalsIgnoreCase("north") || dir.equalsIgnoreCase("nord") || dir.equalsIgnoreCase("n")) {
 			Maps nextMap = Maps.getMapsByPostion(x, y+1);
 			if(nextMap != null) {

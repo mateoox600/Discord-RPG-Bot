@@ -14,7 +14,11 @@ import net.dv8tion.jda.api.entities.Activity;
 import net.dv8tion.jda.api.entities.User;
 
 import javax.security.auth.login.LoginException;
-import java.io.*;
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileReader;
+import java.io.IOException;
+import java.sql.SQLException;
 import java.util.*;
 
 public class Main {
@@ -22,21 +26,27 @@ public class Main {
     private static JDA jda;
     private static File tokenFile = new File("h://Bot/token.txt");
     private static boolean running = true;
+    public static SqlManager sqlManager;
     public static Log logger;
     public static HashMap<String, PlayerData> players = new HashMap<>();
 
     @SuppressWarnings("deprecation")
-    public static void main(String[] args) throws LoginException, InterruptedException, IOException {
+    public static void main(String[] args) throws LoginException, InterruptedException, IOException, ClassNotFoundException, SQLException, InstantiationException, IllegalAccessException {
 
         if (!tokenFile.exists()) {
             return;
         }
 
+        logger = new Log();
+
+        sqlManager = new SqlManager("jdbc:mysql:", "127.0.0.1:3306", "discord bot", "root", "");
+        sqlManager.connection();
+        logger.logSystemMessage("SqlManager Connected", LogStat.INFO);
+
         BufferedReader bf = new BufferedReader(new FileReader(tokenFile));
         String TOKEN = bf.readLine();
         bf.close();
         jda = new JDABuilder(AccountType.BOT).setToken(TOKEN).build();
-        logger = new Log();
         CommandClientBuilder builder = new CommandClientBuilder();
         builder.setPrefix(Config.PREFIX);
 
@@ -89,13 +99,12 @@ public class Main {
                 Date down_date = new Date(System.currentTimeMillis());
                 Objects.requireNonNull(jda.getTextChannelById("691749591485251612")).sendMessage("Bot shutdown successfuly at " + down_date.getHours() + ":" + down_date.getMinutes() + ":" + down_date.getSeconds() + " !").queue();
                 running = false;
-                for (Map.Entry<String, PlayerData> p : players.entrySet()) {
-                    p.getValue().save();
-                }
                 timer.cancel();
                 logger.logSystemMessage("Timer Stop !", LogStat.INFO);
                 jda.shutdown();
                 logger.logSystemMessage("JDA shutdown !", LogStat.INFO);
+                sqlManager.disconnect();
+                logger.logSystemMessage("SqlManager disconnected !", LogStat.INFO);
                 sc.close();
                 logger.logSystemMessage("Shutdown !", LogStat.INFO);
             }
@@ -104,7 +113,7 @@ public class Main {
     }
 
     public static boolean initPlayer(User author) {
-        if (new File(Config.FILE_PREFIX + author.getId() + ".txt").exists()) {
+        if (sqlManager.playerExist(author.getId())) {
             if (!Main.players.containsKey(author.getId())) {
                 players.put(author.getId(), new PlayerData(author, 0));
             }

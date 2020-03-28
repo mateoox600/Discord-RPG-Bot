@@ -28,8 +28,8 @@ public class AccountCommand extends Command {
 			else {
 				if(args[2].equalsIgnoreCase("Warrior") || args[2].equalsIgnoreCase("Archer") || args[2].equalsIgnoreCase("Mage") || args[2].equalsIgnoreCase("Assasin")) {
 					Main.players.put(e.getMember().getUser().getId(), new PlayerData(e.getMember().getUser(), Class.getClassByName(args[2]).getId()));
-					e.getChannel().sendMessage("Ton compte a été créer ! tu es un " + Main.players.get(e.getMember().getUser().getId()).classe.c.getName() + "\n\n"
-							+ "Your account was create ! you are now a " + Main.players.get(e.getMember().getUser().getId()).classe.c.getName()).queue();
+					e.getChannel().sendMessage("Ton compte a été créer ! tu es un " + Main.sqlManager.getClass(e.getMember().getUser().getId()).c.getName() + "\n\n"
+							+ "Your account was create ! you are now a " + Main.sqlManager.getClass(e.getMember().getUser().getId()).c.getName()).queue();
 					Main.logger.logCommand(e.getMember(), e.getGuild(), e.getTextChannel(), e.getMessage().getContentRaw(), LogStat.INFO);
 				}else {
 					e.getChannel().sendMessage("classes list : \n"

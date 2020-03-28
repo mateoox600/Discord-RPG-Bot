@@ -24,11 +24,11 @@ public class LangCommand extends Command {
 			if(args.length > 1) {
 				if(args[1].equalsIgnoreCase("fr")) {
 					e.getChannel().sendMessage("Tu as passer la langue du bot en français").queue();
-					p.lang = 1;
+					Main.sqlManager.setLang(p.author.getId(), 1);
 					Main.logger.logCommand(e.getMember(), e.getGuild(), e.getTextChannel(), e.getMessage().getContentRaw(), LogStat.INFO);
 				} else if(args[1].equalsIgnoreCase("en")) {
 					e.getChannel().sendMessage("You change the bot language to english").queue();
-					p.lang = 0;
+					Main.sqlManager.setLang(p.author.getId(), 0);
 					Main.logger.logCommand(e.getMember(), e.getGuild(), e.getTextChannel(), e.getMessage().getContentRaw(), LogStat.INFO);
 				}
 			}

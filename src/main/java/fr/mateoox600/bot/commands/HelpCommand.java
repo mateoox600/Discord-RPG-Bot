@@ -22,7 +22,7 @@ public class HelpCommand extends Command {
 			boolean player_exist_request = Main.initPlayer(e.getMember().getUser());
 			if(player_exist_request) {
 				PlayerData p = Main.players.get(e.getMember().getUser().getId());
-				e.getMember().getUser().openPrivateChannel().complete().sendMessage(Config.HELP.split("////")[p.lang]).queue();
+				e.getMember().getUser().openPrivateChannel().complete().sendMessage(Config.HELP.split("////")[Main.sqlManager.getLang(p.author.getId())]).queue();
 			}else {
 				e.getMember().getUser().openPrivateChannel().complete().sendMessage(Config.HELP.split("////")[0]).queue();
 			}
