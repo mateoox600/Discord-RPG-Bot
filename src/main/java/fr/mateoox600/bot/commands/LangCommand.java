@@ -9,30 +9,30 @@ import fr.mateoox600.bot.players.PlayerData;
 
 public class LangCommand extends Command {
 
-	public LangCommand(){
-		this.name = "lang";
-		this.aliases = new String[]{""};
-		this.help = "test 0";
-	}
+    public LangCommand() {
+        this.name = "lang";
+        this.aliases = new String[]{""};
+        this.help = "test 0";
+    }
 
-	@Override
-	protected void execute(CommandEvent e) {
-		String[] args = e.getMessage().getContentRaw().split("\\s+");
-		boolean player_exist_request = Main.initPlayer(e.getMember().getUser());
-		if(player_exist_request) {
-			PlayerData p = Main.players.get(e.getMember().getUser().getId());
-			if(args.length > 1) {
-				if(args[1].equalsIgnoreCase("fr")) {
-					e.getChannel().sendMessage("Tu as passer la langue du bot en français").queue();
-					Main.sqlManager.setLang(p.author.getId(), 1);
-					Main.logger.logCommand(e.getMember(), e.getGuild(), e.getTextChannel(), e.getMessage().getContentRaw(), LogStat.INFO);
-				} else if(args[1].equalsIgnoreCase("en")) {
-					e.getChannel().sendMessage("You change the bot language to english").queue();
-					Main.sqlManager.setLang(p.author.getId(), 0);
-					Main.logger.logCommand(e.getMember(), e.getGuild(), e.getTextChannel(), e.getMessage().getContentRaw(), LogStat.INFO);
-				}
-			}
-		}else e.getChannel().sendMessage(Config.MUST_CREATE_ACCOUNT).queue();
-	}
-	
+    @Override
+    protected void execute(CommandEvent e) {
+        String[] args = e.getMessage().getContentRaw().split("\\s+");
+        boolean player_exist_request = Main.initPlayer(e.getMember().getUser());
+        if (player_exist_request) {
+            PlayerData p = Main.players.get(e.getMember().getUser().getId());
+            if (args.length > 1) {
+                if (args[1].equalsIgnoreCase("fr")) {
+                    e.getChannel().sendMessage("Tu as passer la langue du bot en français").queue();
+                    Main.sqlManager.setLang(p.author.getId(), 1);
+                    Main.logger.logCommand(e.getMember(), e.getGuild(), e.getTextChannel(), e.getMessage().getContentRaw(), LogStat.INFO);
+                } else if (args[1].equalsIgnoreCase("en")) {
+                    e.getChannel().sendMessage("You change the bot language to english").queue();
+                    Main.sqlManager.setLang(p.author.getId(), 0);
+                    Main.logger.logCommand(e.getMember(), e.getGuild(), e.getTextChannel(), e.getMessage().getContentRaw(), LogStat.INFO);
+                }
+            }
+        } else e.getChannel().sendMessage(Config.MUST_CREATE_ACCOUNT).queue();
+    }
+
 }

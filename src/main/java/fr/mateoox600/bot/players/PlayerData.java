@@ -3,6 +3,7 @@ package fr.mateoox600.bot.players;
 import fr.mateoox600.bot.Config;
 import fr.mateoox600.bot.Main;
 import fr.mateoox600.bot.map.Maps;
+import fr.mateoox600.bot.players.quests.Quest;
 import fr.mateoox600.bot.players.ressource.Ressources;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.entities.MessageEmbed.Field;
@@ -13,10 +14,13 @@ import java.awt.*;
 public class PlayerData {
 
     public User author;
+    public String map;
+    public Quest quest;
 
     public PlayerData(User author, int start_class) {
 
         this.author = author;
+        this.quest = new Quest();
 
         if (!Main.sqlManager.playerExist(author.getId())) {
             Main.sqlManager.createPlayer(author.getId(), author.getName(), start_class);
@@ -26,7 +30,7 @@ public class PlayerData {
 
     public void refresh() {
 
-        Main.sqlManager.setLevel(author.getId(), (int) (Main.sqlManager.getXp(author.getId()) / ((100 * ((Main.sqlManager.getLevel(author.getId()) + 1) * 1.1)))));
+        Main.sqlManager.setLevel(author.getId(), (int) (Main.sqlManager.getXp(author.getId()) / ((1000 * ((Main.sqlManager.getLevel(author.getId()) + 1) * 1.7)))));
         Main.sqlManager.setMaxHealth(author.getId(), 20);
 
     }
@@ -34,20 +38,21 @@ public class PlayerData {
     public void loop() {
 
         this.refresh();
+        quest.loop();
 
         if (Main.sqlManager.getFarming(author.getId())) {
-            Main.sqlManager.setFarmSeconds(author.getId(), Main.sqlManager.getFarmSeconds(author.getId())-1);
+            Main.sqlManager.setFarmSeconds(author.getId(), Main.sqlManager.getFarmSeconds(author.getId()) - 1);
             if (Main.sqlManager.getFarmSeconds(author.getId()) == 0) {
-                if(Main.sqlManager.getMap(author.getId()).currentMap.getRessources() == Ressources.STONE){
+                if (Main.sqlManager.getMap(author.getId()).currentMap.getRessources() == Ressources.STONE) {
                     Main.sqlManager.setRessourcesToClaim(author.getId(), new int[]{Main.sqlManager.getRessourcesToClaim(author.getId())[0] + Main.sqlManager.getFarmNumber(author.getId()), Main.sqlManager.getRessourcesToClaim(author.getId())[1], Main.sqlManager.getRessourcesToClaim(author.getId())[2], Main.sqlManager.getRessourcesToClaim(author.getId())[3], Main.sqlManager.getRessourcesToClaim(author.getId())[4]});
-                }else if(Main.sqlManager.getMap(author.getId()).currentMap.getRessources() == Ressources.COPPER){
+                } else if (Main.sqlManager.getMap(author.getId()).currentMap.getRessources() == Ressources.COPPER) {
                     Main.sqlManager.setRessourcesToClaim(author.getId(), new int[]{Main.sqlManager.getRessourcesToClaim(author.getId())[0], Main.sqlManager.getRessourcesToClaim(author.getId())[1] + Main.sqlManager.getFarmNumber(author.getId()), Main.sqlManager.getRessourcesToClaim(author.getId())[2], Main.sqlManager.getRessourcesToClaim(author.getId())[3], Main.sqlManager.getRessourcesToClaim(author.getId())[4]});
-                }else if(Main.sqlManager.getMap(author.getId()).currentMap.getRessources() == Ressources.IRON){
+                } else if (Main.sqlManager.getMap(author.getId()).currentMap.getRessources() == Ressources.IRON) {
                     Main.sqlManager.setRessourcesToClaim(author.getId(), new int[]{Main.sqlManager.getRessourcesToClaim(author.getId())[0], Main.sqlManager.getRessourcesToClaim(author.getId())[1], Main.sqlManager.getRessourcesToClaim(author.getId())[2] + Main.sqlManager.getFarmNumber(author.getId()), Main.sqlManager.getRessourcesToClaim(author.getId())[3], Main.sqlManager.getRessourcesToClaim(author.getId())[4]});
-                }else if(Main.sqlManager.getMap(author.getId()).currentMap.getRessources() == Ressources.FISH){
+                } else if (Main.sqlManager.getMap(author.getId()).currentMap.getRessources() == Ressources.FISH) {
                     Main.sqlManager.setRessourcesToClaim(author.getId(), new int[]{Main.sqlManager.getRessourcesToClaim(author.getId())[0], Main.sqlManager.getRessourcesToClaim(author.getId())[1], Main.sqlManager.getRessourcesToClaim(author.getId())[2], Main.sqlManager.getRessourcesToClaim(author.getId())[3] + Main.sqlManager.getFarmNumber(author.getId()), Main.sqlManager.getRessourcesToClaim(author.getId())[4]});
-                }else if(Main.sqlManager.getMap(author.getId()).currentMap.getRessources() == Ressources.WOOD){
-                    Main.sqlManager.setRessourcesToClaim(author.getId(), new int[]{Main.sqlManager.getRessourcesToClaim(author.getId())[0], Main.sqlManager.getRessourcesToClaim(author.getId())[1], Main.sqlManager.getRessourcesToClaim(author.getId())[2],Main.sqlManager.getRessourcesToClaim(author.getId())[3] , Main.sqlManager.getRessourcesToClaim(author.getId())[4] + Main.sqlManager.getFarmNumber(author.getId())});
+                } else if (Main.sqlManager.getMap(author.getId()).currentMap.getRessources() == Ressources.WOOD) {
+                    Main.sqlManager.setRessourcesToClaim(author.getId(), new int[]{Main.sqlManager.getRessourcesToClaim(author.getId())[0], Main.sqlManager.getRessourcesToClaim(author.getId())[1], Main.sqlManager.getRessourcesToClaim(author.getId())[2], Main.sqlManager.getRessourcesToClaim(author.getId())[3], Main.sqlManager.getRessourcesToClaim(author.getId())[4] + Main.sqlManager.getFarmNumber(author.getId())});
                 }
                 Main.sqlManager.setToClaim(author.getId(), true);
                 Main.sqlManager.setFarming(author.getId(), false);
@@ -84,6 +89,11 @@ public class PlayerData {
     }
 
     public String getMap() {
+        refreshMap();
+        return map;
+    }
+
+    public void refreshMap() {
 
         StringBuilder map = new StringBuilder("Map \n");
 
@@ -107,7 +117,7 @@ public class PlayerData {
         map.append("\n\n");
         map.append(Config.YOUR_POS.split("////")[Main.sqlManager.getLang(author.getId())]).append(Main.sqlManager.getMap(author.getId()).currentMap.getName());
 
-        return map.toString();
+        this.map = map.toString();
     }
 
     public void startFarming(int time, int number) {
@@ -125,6 +135,10 @@ public class PlayerData {
         Main.sqlManager.setWood(author.getId(), Main.sqlManager.getRessourcesToClaim(author.getId())[4] + Main.sqlManager.getWood(author.getId()));
         Main.sqlManager.setRessourcesToClaim(author.getId(), new int[]{0, 0, 0, 0, 0});
         return save;
+    }
+
+    public void startQuest(){
+        quest.createQuest(Main.sqlManager.getLevel(author.getId()));
     }
 
 }

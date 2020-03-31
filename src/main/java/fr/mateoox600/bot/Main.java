@@ -3,10 +3,10 @@ package fr.mateoox600.bot;
 import com.jagrosh.jdautilities.command.CommandClient;
 import com.jagrosh.jdautilities.command.CommandClientBuilder;
 import fr.mateoox600.bot.commands.*;
+import fr.mateoox600.bot.events.JoinEvent;
 import fr.mateoox600.bot.log.Log;
 import fr.mateoox600.bot.log.LogStat;
 import fr.mateoox600.bot.players.PlayerData;
-import net.dv8tion.jda.api.AccountType;
 import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.JDABuilder;
 import net.dv8tion.jda.api.OnlineStatus;
@@ -30,7 +30,6 @@ public class Main {
     public static Log logger;
     public static HashMap<String, PlayerData> players = new HashMap<>();
 
-    @SuppressWarnings("deprecation")
     public static void main(String[] args) throws LoginException, InterruptedException, IOException, ClassNotFoundException, SQLException, InstantiationException, IllegalAccessException {
 
         if (!tokenFile.exists()) {
@@ -46,7 +45,7 @@ public class Main {
         BufferedReader bf = new BufferedReader(new FileReader(tokenFile));
         String TOKEN = bf.readLine();
         bf.close();
-        jda = new JDABuilder(AccountType.BOT).setToken(TOKEN).build();
+        jda = JDABuilder.createDefault(TOKEN).build();
         CommandClientBuilder builder = new CommandClientBuilder();
         builder.setPrefix(Config.PREFIX);
 
@@ -54,6 +53,9 @@ public class Main {
         jda.getPresence().setStatus(OnlineStatus.DO_NOT_DISTURB);
         jda.getPresence().setActivity(Activity.playing("Launching please wait"));
         jda.awaitReady();
+
+        jda.addEventListener(new JoinEvent());
+        logger.logSystemMessage("Events Register !", LogStat.INFO);
 
         builder.addCommand(new HelpCommand());
         logger.logSystemMessage("Help Command Register !", LogStat.INFO);
@@ -73,6 +75,8 @@ public class Main {
         logger.logSystemMessage("Account Command Register !", LogStat.INFO);
         builder.addCommand(new ClassesCommand());
         logger.logSystemMessage("Classes Command Register !", LogStat.INFO);
+        builder.addCommand(new QuestCommand());
+        logger.logSystemMessage("Quest Command Register !", LogStat.INFO);
 
         builder.setOwnerId("664945581470253078");
         CommandClient client = builder.build();
@@ -86,18 +90,18 @@ public class Main {
         jda.getPresence().setStatus(OnlineStatus.ONLINE);
         jda.getPresence().setActivity(Activity.playing("Bot launch !"));
         logger.logSystemMessage("Start !", LogStat.INFO);
-        Date start_date = new Date(System.currentTimeMillis());
-        Objects.requireNonNull(jda.getTextChannelById("691749591485251612")).sendMessage("Bot stated successfuly at " + start_date.getHours() + ":" + start_date.getMinutes() + ":" + start_date.getSeconds() + " !").queue();
+        Calendar start_cal = Calendar.getInstance();
+        Objects.requireNonNull(jda.getTextChannelById("691749591485251612")).sendMessage("Bot stated successfully at " + start_cal.get(Calendar.HOUR_OF_DAY) + ":" + start_cal.get(Calendar.MINUTE) + ":" + start_cal.get(Calendar.SECOND) + " !").queue();
 
         Scanner sc = new Scanner(System.in);
         while (running) {
             String[] cmd_args = sc.nextLine().split("\\s+");
             String cmd = cmd_args[0];
             if (cmd.equalsIgnoreCase("stop")) {
-                System.out.println("Stoping Bot");
+                System.out.println("Stopping Bot");
                 logger.logSystemMessage("Getting shutdown !", LogStat.INFO);
-                Date down_date = new Date(System.currentTimeMillis());
-                Objects.requireNonNull(jda.getTextChannelById("691749591485251612")).sendMessage("Bot shutdown successfuly at " + down_date.getHours() + ":" + down_date.getMinutes() + ":" + down_date.getSeconds() + " !").queue();
+                Calendar down_cal = Calendar.getInstance();
+                Objects.requireNonNull(jda.getTextChannelById("691749591485251612")).sendMessage("Bot shutdown successfully at " + down_cal.get(Calendar.HOUR_OF_DAY) + ":" + down_cal.get(Calendar.MINUTE) + ":" + down_cal.get(Calendar.SECOND) + " !").queue();
                 running = false;
                 timer.cancel();
                 logger.logSystemMessage("Timer Stop !", LogStat.INFO);
@@ -122,7 +126,7 @@ public class Main {
     }
 
     public static void messageOwner() {
-        Objects.requireNonNull(jda.getUserById("251978573139673088")).openPrivateChannel().complete().sendMessage("Une érreur a été détècter XD").queue();
+        Objects.requireNonNull(jda.getUserById("251978573139673088")).openPrivateChannel().complete().sendMessage("Une erreur a été detecter XD").queue();
     }
 
 }

@@ -49,7 +49,7 @@ public class FarmCommand extends Command {
                                     }
                                     timeToFarm *= 60;
                                     p.startFarming(timeToFarm, numberOfFarm);
-									Main.logger.logCommand(e.getMember(), e.getGuild(), e.getTextChannel(), e.getMessage().getContentRaw(), LogStat.INFO);
+                                    Main.logger.logCommand(e.getMember(), e.getGuild(), e.getTextChannel(), e.getMessage().getContentRaw(), LogStat.INFO);
                                 } else {
                                     e.getChannel().sendMessage(Config.VALID_ARG.split("////")[lang] + " \";farm <number (>0)>\"").queue();
                                     Main.logger.logCommand(e.getMember(), e.getGuild(), e.getTextChannel(), e.getMessage().getContentRaw(), LogStat.WARN);
@@ -74,18 +74,18 @@ public class FarmCommand extends Command {
                             "	- " + Config.IRON.split("////")[lang] + ": " + request[2] + "\n" +
                             "	- " + Config.FISH.split("////")[lang] + ": " + request[3] + "\n" +
                             "	- " + Config.WOOD.split("////")[lang] + ": " + request[4]).queue();
-					Main.logger.logCommand(e.getMember(), e.getGuild(), e.getTextChannel(), e.getMessage().getContentRaw(), LogStat.INFO);
+                    Main.logger.logCommand(e.getMember(), e.getGuild(), e.getTextChannel(), e.getMessage().getContentRaw(), LogStat.INFO);
                 } else if (args[1].equalsIgnoreCase("time")) {
                     if (Main.sqlManager.getFarmSeconds(p.author.getId()) > 0) {
                         e.getChannel().sendMessage(" - '" + Main.sqlManager.getFarmSeconds(p.author.getId()) + " s'").queue();
-						Main.logger.logCommand(e.getMember(), e.getGuild(), e.getTextChannel(), e.getMessage().getContentRaw(), LogStat.INFO);
-                    } else if(Main.sqlManager.getToClaim(p.author.getId())) {
-						e.getChannel().sendMessage(" - Done").queue();
-						Main.logger.logCommand(e.getMember(), e.getGuild(), e.getTextChannel(), e.getMessage().getContentRaw(), LogStat.INFO);
-                    }else{
-						e.getChannel().sendMessage("\";farm <farming/claim/time> <number (farming)>\"").queue();
-						Main.logger.logCommand(e.getMember(), e.getGuild(), e.getTextChannel(), e.getMessage().getContentRaw(), LogStat.WARN);
-					}
+                        Main.logger.logCommand(e.getMember(), e.getGuild(), e.getTextChannel(), e.getMessage().getContentRaw(), LogStat.INFO);
+                    } else if (Main.sqlManager.getToClaim(p.author.getId())) {
+                        e.getChannel().sendMessage(" - Done").queue();
+                        Main.logger.logCommand(e.getMember(), e.getGuild(), e.getTextChannel(), e.getMessage().getContentRaw(), LogStat.INFO);
+                    } else {
+                        e.getChannel().sendMessage("\";farm <farming> <number>\"").queue();
+                        Main.logger.logCommand(e.getMember(), e.getGuild(), e.getTextChannel(), e.getMessage().getContentRaw(), LogStat.WARN);
+                    }
                 } else {
                     e.getChannel().sendMessage("\";farm <farming/claim/time> <number (farming)>\"").queue();
                     Main.logger.logCommand(e.getMember(), e.getGuild(), e.getTextChannel(), e.getMessage().getContentRaw(), LogStat.WARN);

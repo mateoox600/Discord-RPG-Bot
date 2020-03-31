@@ -36,6 +36,13 @@ public class Config {
     public static String ONE_OF_THAT_PIECE = "You must choice one of those piece of stuff////Tu doit choisir un de ces pièce de stuff";
     public static String TO_LEVEL_UP_STUFF = "To level up your stuff do \";levelup <piece of stuff>\"////Pour level up ton stuff fait \";levelup <pièce de stuff>\"";
 
+    public static String CANT_QUEST = "You cannot do that while making a quest !////Tu ne peut pas faire ça pendant une quête !";
+    public static String NO_QUEST = "There are no quest in this zone !////Il n'y a pas de quête dans cette zone !";
+    public static String QUEST_START = "You start a quest for ////tu a commencer une quête pour ";
+    public static String QUEST_NOT_FINISH = "The quest is not finish !////La quête n'est pas encore fini !";
+    public static String QUEST_NOT_CLAIM = "Claim the quest reward before that !////Récupère la recompense de la quête avant de faire ça !";
+    public static String QUEST_GIVE_YOU = "The quest give you: ////La quête ta donner: ";
+
     public static String HELP = "Help \n"
             + "- ;account : account management and creation \n"
             + "- ;character : see your stats \n"

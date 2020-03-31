@@ -18,6 +18,7 @@ public class SqlManager {
         this.database = database;
         this.user = user;
         this.pass = pass;
+        //com.mysql.jdbc.Driver
         DriverManager.registerDriver((Driver) Class.forName("com.mysql.cj.jdbc.Driver").newInstance());
     }
 
@@ -99,7 +100,7 @@ public class SqlManager {
             stm.setString(1, id);
             int result = 0;
             ResultSet rs = stm.executeQuery();
-            while(rs.next()){
+            while (rs.next()) {
                 result = rs.getInt("health");
             }
             stm.close();
@@ -136,7 +137,7 @@ public class SqlManager {
             stm.setString(1, id);
             int result = 0;
             ResultSet rs = stm.executeQuery();
-            while(rs.next()){
+            while (rs.next()) {
                 result = rs.getInt("max_health");
             }
             stm.close();
@@ -173,7 +174,7 @@ public class SqlManager {
             stm.setString(1, id);
             int result = 0;
             ResultSet rs = stm.executeQuery();
-            while(rs.next()){
+            while (rs.next()) {
                 result = rs.getInt("level");
             }
             stm.close();
@@ -210,7 +211,7 @@ public class SqlManager {
             stm.setString(1, id);
             int result = 0;
             ResultSet rs = stm.executeQuery();
-            while(rs.next()){
+            while (rs.next()) {
                 result = rs.getInt("xp");
             }
             stm.close();
@@ -240,18 +241,18 @@ public class SqlManager {
     }
 
 
-    public int getCoins(String id) {
+    public double getCoins(String id) {
         PreparedStatement stm;
         try {
             stm = connection.prepareStatement("SELECT coins FROM rpg_bot WHERE id = ?");
             stm.setString(1, id);
-            int result = 0;
+            double result = 0;
             ResultSet rs = stm.executeQuery();
-            while(rs.next()){
+            while (rs.next()) {
                 result = rs.getInt("coins");
             }
             stm.close();
-            return result;
+            return result/100;
         } catch (SQLException e) {
             e.printStackTrace();
             Main.messageOwner();
@@ -259,12 +260,12 @@ public class SqlManager {
         return 0;
     }
 
-    public void setCoins(String id, int amount) {
+    public void setCoins(String id, double amount) {
         PreparedStatement stm;
         try {
             stm = connection.prepareStatement("UPDATE rpg_bot SET coins = ? WHERE id = ?");
 
-            stm.setInt(1, amount);
+            stm.setInt(1, (int) (amount*100));
             stm.setString(2, id);
 
             stm.executeUpdate();
@@ -284,7 +285,7 @@ public class SqlManager {
             stm.setString(1, id);
             int result = 0;
             ResultSet rs = stm.executeQuery();
-            while(rs.next()){
+            while (rs.next()) {
                 result = rs.getInt("stone");
             }
             stm.close();
@@ -321,7 +322,7 @@ public class SqlManager {
             stm.setString(1, id);
             int result = 0;
             ResultSet rs = stm.executeQuery();
-            while(rs.next()){
+            while (rs.next()) {
                 result = rs.getInt("iron");
             }
             stm.close();
@@ -358,7 +359,7 @@ public class SqlManager {
             stm.setString(1, id);
             int result = 0;
             ResultSet rs = stm.executeQuery();
-            while(rs.next()){
+            while (rs.next()) {
                 result = rs.getInt("copper");
             }
             stm.close();
@@ -395,7 +396,7 @@ public class SqlManager {
             stm.setString(1, id);
             int result = 0;
             ResultSet rs = stm.executeQuery();
-            while(rs.next()){
+            while (rs.next()) {
                 result = rs.getInt("fish");
             }
             stm.close();
@@ -432,7 +433,7 @@ public class SqlManager {
             stm.setString(1, id);
             int result = 0;
             ResultSet rs = stm.executeQuery();
-            while(rs.next()){
+            while (rs.next()) {
                 result = rs.getInt("wood");
             }
             stm.close();
@@ -469,7 +470,7 @@ public class SqlManager {
             stm.setString(1, id);
             boolean result = false;
             ResultSet rs = stm.executeQuery();
-            while(rs.next()){
+            while (rs.next()) {
                 result = rs.getBoolean("farming");
             }
             stm.close();
@@ -506,7 +507,7 @@ public class SqlManager {
             stm.setString(1, id);
             boolean result = false;
             ResultSet rs = stm.executeQuery();
-            while(rs.next()){
+            while (rs.next()) {
                 result = rs.getBoolean("farming");
             }
             stm.close();
@@ -544,23 +545,23 @@ public class SqlManager {
             //rs.getInt("ressources_to_claim_stone"), rs.getInt("ressources_to_claim_copper"), rs.getInt("ressources_to_claim_iron"), rs.getInt("ressources_to_claim_fish"), rs.getInt("ressources_to_claim_wood")
             ResultSet rs = stm.executeQuery();
             int i1 = 0;
-            while(rs.next()){
+            while (rs.next()) {
                 i1 = rs.getInt("ressources_to_claim_stone");
             }
             int i2 = 0;
-            while(rs.next()){
+            while (rs.next()) {
                 i2 = rs.getInt("ressources_to_claim_copper");
             }
             int i3 = 0;
-            while(rs.next()){
+            while (rs.next()) {
                 i3 = rs.getInt("ressources_to_claim_iron");
             }
             int i4 = 0;
-            while(rs.next()){
+            while (rs.next()) {
                 i4 = rs.getInt("ressources_to_claim_fish");
             }
             int i5 = 0;
-            while(rs.next()){
+            while (rs.next()) {
                 i5 = rs.getInt("ressources_to_claim_wood");
             }
             stm.close();
@@ -616,7 +617,7 @@ public class SqlManager {
             stm.setString(1, id);
             int result = 0;
             ResultSet rs = stm.executeQuery();
-            while(rs.next()){
+            while (rs.next()) {
                 result = rs.getInt("farm_number");
             }
             stm.close();
@@ -653,7 +654,7 @@ public class SqlManager {
             stm.setString(1, id);
             int result = 0;
             ResultSet rs = stm.executeQuery();
-            while(rs.next()){
+            while (rs.next()) {
                 result = rs.getInt("farm_seconds");
             }
             stm.close();
@@ -690,7 +691,7 @@ public class SqlManager {
             stm.setString(1, id);
             int result = 0;
             ResultSet rs = stm.executeQuery();
-            while(rs.next()){
+            while (rs.next()) {
                 result = rs.getInt("lang");
             }
             stm.close();
@@ -727,11 +728,11 @@ public class SqlManager {
             stm.setString(1, id);
             ResultSet rs = stm.executeQuery();
             int classe_id = 0;
-            while(rs.next()){
+            while (rs.next()) {
                 classe_id = rs.getInt("classe_id");
             }
             int classe_rank = 0;
-            while(rs.next()){
+            while (rs.next()) {
                 classe_rank = rs.getInt("classe_rank");
             }
             stm.close();
@@ -768,7 +769,7 @@ public class SqlManager {
             stm.setString(1, id);
             ResultSet rs = stm.executeQuery();
             int weapon_id = 0;
-            while(rs.next()){
+            while (rs.next()) {
                 weapon_id = rs.getInt("weapon_id");
             }
             stm.close();
@@ -805,7 +806,7 @@ public class SqlManager {
             stm.setString(1, id);
             ResultSet rs = stm.executeQuery();
             int armor_rank = 0;
-            while(rs.next()){
+            while (rs.next()) {
                 armor_rank = rs.getInt("armor_rank");
             }
             stm.close();
@@ -842,11 +843,11 @@ public class SqlManager {
             stm.setString(1, id);
             ResultSet rs = stm.executeQuery();
             int x = 0;
-            while(rs.next()){
+            while (rs.next()) {
                 x = rs.getInt("map_x");
             }
             int y = 0;
-            while(rs.next()){
+            while (rs.next()) {
                 y = rs.getInt("map_y");
             }
             stm.close();
