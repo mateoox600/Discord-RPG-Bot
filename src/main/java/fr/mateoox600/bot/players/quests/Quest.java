@@ -19,7 +19,7 @@ public class Quest {
     public void createQuest(int player_level) {
         Random rand = new Random();
         this.gold = Math.floor(rand.nextDouble() * 2.5 * (player_level + 1) * 100) / 100;
-        this.xp = rand.nextInt(100) * (player_level + 1);
+        this.xp = rand.nextInt(250) * (player_level + 1);
         this.time_seconds = (int) ((gold * 100) * 1 + (xp / 10)) / Math.max((player_level + 1) / 4, 1);
         int time_minutes = (int) Math.floor((double) time_seconds / 60);
         int time_seconds_keep = this.time_seconds - time_minutes * 60;

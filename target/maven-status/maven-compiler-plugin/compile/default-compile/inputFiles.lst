@@ -3,8 +3,10 @@ H:\Bot\Discord RPG Bot\src\main\java\fr\mateoox600\bot\commands\AccountCommand.j
 H:\Bot\Discord RPG Bot\src\main\java\fr\mateoox600\bot\players\classe\Class.java
 H:\Bot\Discord RPG Bot\src\main\java\fr\mateoox600\bot\SqlManager.java
 H:\Bot\Discord RPG Bot\src\main\java\fr\mateoox600\bot\commands\FarmCommand.java
+H:\Bot\Discord RPG Bot\src\main\java\fr\mateoox600\bot\commands\QuestCommand.java
 H:\Bot\Discord RPG Bot\src\main\java\fr\mateoox600\bot\players\ressource\Ressources.java
 H:\Bot\Discord RPG Bot\src\main\java\fr\mateoox600\bot\commands\LevelUpCommand.java
+H:\Bot\Discord RPG Bot\src\main\java\fr\mateoox600\bot\players\quests\Quest.java
 H:\Bot\Discord RPG Bot\src\main\java\fr\mateoox600\bot\commands\CharacterCommand.java
 H:\Bot\Discord RPG Bot\src\main\java\fr\mateoox600\bot\commands\MapCommand.java
 H:\Bot\Discord RPG Bot\src\main\java\fr\mateoox600\bot\Config.java
