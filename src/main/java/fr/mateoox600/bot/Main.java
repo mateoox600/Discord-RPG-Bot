@@ -53,7 +53,7 @@ public class Main {
         jda.getPresence().setActivity(Activity.playing("Launching please wait"));
         jda.awaitReady();
 
-        jda.addEventListener(new JoinEvent());
+        //jda.addEventListener(new JoinEvent());
         logger.logSystemMessage("Events Register !", LogStat.INFO);
 
         Main.registerCommands(builder);
@@ -79,18 +79,32 @@ public class Main {
             String cmd = cmd_args[0];
             if (cmd.equalsIgnoreCase("stop")) {
                 if (cmd_args.length == 1) {
-                    shutdown();
+                    logger.logSystemMessage("Getting shutdown !", LogStat.INFO);
+                    running = false;
+                    Calendar down_cal = Calendar.getInstance();
+                    Objects.requireNonNull(jda.getTextChannelById("691749591485251612")).sendMessage("Bot shutdown successfully at " + down_cal.get(Calendar.HOUR_OF_DAY) + ":" + down_cal.get(Calendar.MINUTE) + ":" + down_cal.get(Calendar.SECOND) + " !").queue();
+                    jda.shutdown();
+                    logger.logSystemMessage("JDA shutdown !", LogStat.INFO);
+                    sqlManager.disconnect();
+                    logger.logSystemMessage("SqlManager disconnected !", LogStat.INFO);
                     timer.cancel();
                     logger.logSystemMessage("Timer Stop !", LogStat.INFO);
                     sc.close();
+                    logger.logSystemMessage("Shutdown !", LogStat.INFO);
                 } else {
                     if (cmd_args[1].equalsIgnoreCase("-m")) {
-                        shutdown();
+                        logger.logSystemMessage("Getting shutdown !", LogStat.INFO);
+                        running = false;
                         Calendar down_cal = Calendar.getInstance();
                         Objects.requireNonNull(jda.getTextChannelById("691749591485251612")).sendMessage("Bot shutdown for a maintenance successfully at " + down_cal.get(Calendar.HOUR_OF_DAY) + ":" + down_cal.get(Calendar.MINUTE) + ":" + down_cal.get(Calendar.SECOND) + " !").queue();
+                        jda.shutdown();
+                        logger.logSystemMessage("JDA shutdown !", LogStat.INFO);
+                        sqlManager.disconnect();
+                        logger.logSystemMessage("SqlManager disconnected !", LogStat.INFO);
                         timer.cancel();
                         logger.logSystemMessage("Timer Stop !", LogStat.INFO);
                         sc.close();
+                        logger.logSystemMessage("Shutdown !", LogStat.INFO);
                     }
                 }
             }
@@ -118,19 +132,6 @@ public class Main {
         logger.logSystemMessage("Classes Command Register !", LogStat.INFO);
         builder.addCommand(new QuestCommand());
         logger.logSystemMessage("Quest Command Register !", LogStat.INFO);
-    }
-
-    private static void shutdown() throws SQLException {
-        System.out.println("Stopping Bot");
-        logger.logSystemMessage("Getting shutdown !", LogStat.INFO);
-        Calendar down_cal = Calendar.getInstance();
-        Objects.requireNonNull(jda.getTextChannelById("691749591485251612")).sendMessage("Bot shutdown successfully at " + down_cal.get(Calendar.HOUR_OF_DAY) + ":" + down_cal.get(Calendar.MINUTE) + ":" + down_cal.get(Calendar.SECOND) + " !").queue();
-        running = false;
-        jda.shutdown();
-        logger.logSystemMessage("JDA shutdown !", LogStat.INFO);
-        sqlManager.disconnect();
-        logger.logSystemMessage("SqlManager disconnected !", LogStat.INFO);
-        logger.logSystemMessage("Shutdown !", LogStat.INFO);
     }
 
     public static boolean initPlayer(User author) {
